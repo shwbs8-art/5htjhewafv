@@ -29,7 +29,7 @@ function startBot() {
     host: 'X1XC.aternos.me',
     port: ,
     username: 'ADMIN',
-    version: '1.19.2',
+    version: '1.21.1',
     auth: 'offline'
   })
 
