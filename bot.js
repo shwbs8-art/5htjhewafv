@@ -37,7 +37,7 @@ bot.on('playerJoined', (player) => {
   if (player.username === bot.username) return
 
   setTimeout(() => {
-    bot.chat(`اهلاً وسهلاً ${player.username} ❤️ مرحباً بك في سيرفر عراق بابلون، الرجاء الانضمام إلى سيرفر الديسكورد: https://discord.gg/EpCyF3A6Up`)
+    bot.chat(`اهلاً وسهلاً ${player.username}  مرحباً بك في سيرفر عراق بابلون، الرجاء الانضمام إلى سيرفر الديسكورد: https://discord.gg/EpCyF3A6Up`)
   }, 60000)
 })
     let moveRight = true
