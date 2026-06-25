@@ -4,7 +4,7 @@ const { Client, GatewayIntentBits } = require('discord.js')
 const mineflayer = require('mineflayer')
 const fs = require('fs')
 
-const LOG_CHANNEL_ID = '1346238254348767266'
+const LOG_CHANNEL_ID = '1519493165651067113'
 
 const client = new Client({
   intents: [
