@@ -17,7 +17,7 @@ client.once('ready', () => {
   console.log(`Discord Ready: ${client.user.tag}`)
 })
 
-client.login(process.env.DISCORD_TOKEN)
+client.login(process.env.MTUxOTQzMzA5NTkzMjE0OTg1NA.Gg6lNi.EldFZo4hUM1qYEQnCfpNM0Nj624T8yeXYaSTsU)
 
 function sendLog(message) {
   const channel = client.channels.cache.get(LOG_CHANNEL_ID)
