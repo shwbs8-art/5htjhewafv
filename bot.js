@@ -35,11 +35,17 @@ function startBot() {
     sendLog('✅ admin دخل سيرفر ماينكرافت')
 bot.on('playerJoined', (player) => {
   if (player.username === bot.username) return
+const message =
+'§6§l[ عراق بابلون ] §r اهلاً وسهلاً بكم في السيرفر! | §bDiscord: https://discord.gg/EpCyF3A6Up'
 
-  setTimeout(() => {
-    bot.chat(`اهلاً وسهلاً ${player.username}  مرحباً بك في سيرفر عراق بابلون، الرجاء الانضمام إلى سيرفر الديسكورد: https://discord.gg/EpCyF3A6Up`)
-  }, 60000)
+bot.once('spawn', () => {
+  bot.chat(message)
+
+  setInterval(() => {
+    bot.chat(message)
+  }, 60 * 60 * 1000)
 })
+ 
     let moveRight = true
 
     setInterval(() => {
