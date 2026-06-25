@@ -32,8 +32,14 @@ function startBot() {
 
   bot.on('spawn', () => {
     console.log('Minecraft bot joined')
-    sendLog('✅ البوت دخل سيرفر ماينكرافت')
+    sendLog('✅ admin دخل سيرفر ماينكرافت')
+bot.on('playerJoined', (player) => {
+  if (player.username === bot.username) return
 
+  setTimeout(() => {
+    bot.chat(`اهلاً وسهلاً ${player.username} ❤️ مرحباً بك في سيرفر عراق بابلون، الرجاء الانضمام إلى سيرفر الديسكورد: https://discord.gg/EpCyF3A6Up`)
+  }, 3000)
+})
     let moveRight = true
 
     setInterval(() => {
