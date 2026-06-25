@@ -4,7 +4,7 @@ const { Client, GatewayIntentBits } = require('discord.js')
 const mineflayer = require('mineflayer')
 const fs = require('fs')
 
-const LOG_CHANNEL_ID = '1519493165651067113'
+const LOG_CHANNEL_ID = '1346238254348767266'
 
 const client = new Client({
   intents: [
@@ -26,9 +26,11 @@ function sendLog(message) {
 
 function startBot() {
   const bot = mineflayer.createBot({
-    host: 'x1xc.aternos.me',
+    host: 'X1XC.aternos.me',
     port: 56576,
-    username: 'admin'
+    username: 'ADMIN',
+    version: '1.19.2',
+    auth: 'offline'
   })
 
   // ===== المتغيرات العامة =====
@@ -44,7 +46,7 @@ function startBot() {
   const attackLog = new Map()
 
   // ===== متغيرات نظام الأدمن =====
-  const admins = ['admin', 'owner'] // أضف أسماء الأدمن هنا
+  const admins = ['ADMIN'] // أضف أسماء الأدمن هنا
   const mutedPlayers = new Map()
   const protectedPlayers = new Set()
   const adminLog = []
@@ -109,8 +111,8 @@ function startBot() {
   }
 
   bot.once('spawn', () => {
-    console.log('Minecraft bot joined')
-    sendLog('✅ admin دخل سيرفر ماينكرافت')
+    console.log('✅ ADMIN دخل سيرفر ماينكرافت')
+    sendLog('✅ ADMIN دخل سيرفر ماينكرافت')
     
     // ===== 1. رسالة الترحيب المتكررة =====
     bot.chat(message)
@@ -287,7 +289,6 @@ function startBot() {
       if (player.username === bot.username) return
       playersList.add(player.username)
       
-      // تحديث إحصائيات اللاعب
       const stats = playerStats.get(player.username) || { joins: 0, messages: 0, playTime: 0 }
       stats.joins++
       stats.lastJoin = new Date().toLocaleString()
@@ -295,14 +296,12 @@ function startBot() {
       
       sendLog(`🟢 ${player.username} دخل السيرفر (إجمالي الزوار: ${playersList.size})`)
       
-      // ألقاب عشوائية
       const titles = ['👑 الملك', '⚔️ المحارب', '🧙 الساحر', '🏹 القناص', '🛡️ الحامي', '💎 الجوهرة']
       const title = titles[Math.floor(Math.random() * titles.length)]
       setTimeout(() => {
         bot.chat(`${title} ${player.username} دخل السيرفر!`)
       }, 1000)
       
-      // حماية اللاعبين المحميين
       if (protectedPlayers.has(player.username)) {
         bot.chat(`🛡️ اللاعب المحمي ${player.username} دخل السيرفر`)
       }
@@ -322,7 +321,6 @@ function startBot() {
     // ===== 11. نظام الشات المتكامل =====
     // =============================================
 
-    // منع المكتومين من الشات
     bot.on('chat', (username, message) => {
       if (mutedPlayers.has(username)) {
         const muteInfo = mutedPlayers.get(username)
@@ -334,14 +332,12 @@ function startBot() {
     bot.on('chat', (username, message) => {
       if (username === bot.username) return
       
-      // تحديث إحصائيات اللاعب
       const stats = playerStats.get(username)
       if (stats) {
         stats.messages++
         playerStats.set(username, stats)
       }
       
-      // 11a. منع السبام
       const now = Date.now()
       if (spamMap.has(username)) {
         const lastMsg = spamMap.get(username)
@@ -352,14 +348,12 @@ function startBot() {
       }
       spamMap.set(username, now)
       
-      // 11b. منع التكرار
       const lastMsg = spamMap.get(username + '_repeat')
       if (lastMsg === message) {
         bot.chat(`⚠️ ${username}، لا تكرر الرسائل!`)
       }
       spamMap.set(username + '_repeat', message)
       
-      // 11c. منع الكلمات السيئة
       const badWords = ['كلمة سيئة1', 'كلمة سيئة2', 'سب', 'شتم']
       const containsBad = badWords.some(word => message.toLowerCase().includes(word))
       if (containsBad) {
@@ -368,12 +362,10 @@ function startBot() {
         suspectList.set(`${username}-badwords`, warnings + 1)
         if (warnings >= 3) {
           bot.chat(`🚫 ${username} تم طردك بسبب تكرار الكلمات السيئة`)
-          // bot.chat(`/kick ${username} كلمات سيئة`)
         }
         return
       }
       
-      // 11d. منع الروابط المشبوهة
       if (message.includes('http') || message.includes('www')) {
         if (!message.includes('discord.gg') && !message.includes('aternos.me')) {
           bot.chat(`⚠️ ${username}، ممنوع نشر روابط خارجية!`)
@@ -381,7 +373,6 @@ function startBot() {
         }
       }
       
-      // 11e. الرد على التحية
       const msg = message.toLowerCase()
       if (msg.includes('سلام') || msg.includes('هلا') || msg.includes('مرحبا')) {
         const replies = [
@@ -393,7 +384,6 @@ function startBot() {
         return
       }
       
-      // 11f. الردود الذكية
       const aiResponses = {
         'كيف الحال': ['الحمد لله، وأنت؟', 'بخير، شكراً لسؤالك!', 'تمام، كيف الأمور معك؟'],
         'شو اخبارك': ['الأخبار جيدة!', 'كل شيء تمام، وأنت؟', 'بخير والحمد لله'],
@@ -406,7 +396,6 @@ function startBot() {
         }
       }
       
-      // 11g. أوامر البوت العامة
       if (message === '!ping') {
         bot.chat(`🏓 Pong! ${username}`)
       }
@@ -513,7 +502,6 @@ function startBot() {
 !اوامر - قائمة الأوامر`)
       }
       
-      // تسجيل الشات في ديسكورد
       sendLog(`💬 ${username}: ${message}`)
     })
 
@@ -832,7 +820,6 @@ function startBot() {
       else if (command === '!استعادة' || command === '!restore') {
         if (fs.existsSync('backup.json')) {
           const backup = JSON.parse(fs.readFileSync('backup.json'))
-          // استعادة البيانات
           bot.chat(`🔄 تم استعادة النسخة الاحتياطية بواسطة ${username}`)
           logAdminAction(username, 'استعادة', 'الكل', 'تمت الاستعادة')
         } else {
@@ -929,6 +916,22 @@ function startBot() {
     setInterval(checkSpecialDays, 60 * 60 * 1000)
 
   }) // نهاية spawn
+
+  // ===== أحداث إضافية خارج spawn =====
+  bot.on('login', () => {
+    console.log('✅ تم تسجيل الدخول إلى السيرفر!')
+  })
+
+  bot.on('spawn', () => {
+    console.log('✅ البوت ظهر في السيرفر!')
+  })
+
+  bot.on('kick', (reason) => {
+    console.log(`🚫 تم طرد البوت! السبب: ${reason}`)
+    sendLog(`🚫 تم طرد البوت! السبب: ${reason}`)
+    setTimeout(startBot, 15000)
+  })
+
 } // نهاية startBot
 
 startBot()
