@@ -3,8 +3,13 @@ require('dotenv').config()
 const { Client, GatewayIntentBits } = require('discord.js')
 const mineflayer = require('mineflayer')
 
+const LOG_CHANNEL_ID = '1519493165651067113'
+
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages
+  ]
 })
 
 client.once('ready', () => {
@@ -12,6 +17,11 @@ client.once('ready', () => {
 })
 
 client.login(process.env.DISCORD_TOKEN)
+
+function sendLog(message) {
+  const channel = client.channels.cache.get(LOG_CHANNEL_ID)
+  if (channel) channel.send(message).catch(console.error)
+}
 
 function startBot() {
   const bot = mineflayer.createBot({
@@ -22,18 +32,17 @@ function startBot() {
 
   bot.on('spawn', () => {
     console.log('Minecraft bot joined')
+    sendLog('✅ البوت دخل سيرفر ماينكرافت')
 
     let moveRight = true
 
     setInterval(() => {
-
       if (moveRight) {
         bot.setControlState('right', true)
 
         setTimeout(() => {
           bot.setControlState('right', false)
         }, 3000)
-
       } else {
         bot.setControlState('left', true)
 
@@ -49,7 +58,6 @@ function startBot() {
         (Math.random() - 0.5) * 0.5,
         true
       )
-
     }, 20000)
 
     setInterval(() => {
@@ -61,12 +69,30 @@ function startBot() {
     }, 60000)
   })
 
+  bot.on('playerJoined', (player) => {
+    if (player.username === bot.username) return
+    sendLog(`🟢 ${player.username} دخل السيرفر`)
+  })
+
+  bot.on('playerLeft', (player) => {
+    if (player.username === bot.username) return
+    sendLog(`🔴 ${player.username} خرج من السيرفر`)
+  })
+
+  bot.on('chat', (username, message) => {
+    if (username === bot.username) return
+    sendLog(`💬 ${username}: ${message}`)
+  })
+
   bot.on('end', () => {
     console.log('Reconnecting...')
+    sendLog('⚠️ انقطع البوت، جاري إعادة الاتصال...')
     setTimeout(startBot, 10000)
   })
 
-  bot.on('error', console.log)
+  bot.on('error', (err) => {
+    console.log(err)
+  })
 }
 
 startBot()
