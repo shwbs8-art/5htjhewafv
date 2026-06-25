@@ -38,7 +38,7 @@ bot.on('playerJoined', (player) => {
 
   setTimeout(() => {
     bot.chat(`اهلاً وسهلاً ${player.username} ❤️ مرحباً بك في سيرفر عراق بابلون، الرجاء الانضمام إلى سيرفر الديسكورد: https://discord.gg/EpCyF3A6Up`)
-  }, 3000)
+  }, 60000)
 })
     let moveRight = true
 
