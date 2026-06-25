@@ -27,7 +27,7 @@ function sendLog(message) {
 function startBot() {
   const bot = mineflayer.createBot({
     host: 'X1XC.aternos.me',
-    port: 56576,
+    port: ,
     username: 'ADMIN',
     version: '1.19.2',
     auth: 'offline'
