@@ -35,6 +35,7 @@ function startBot() {
     sendLog('✅ admin دخل سيرفر ماينكرافت')
 bot.on('playerJoined', (player) => {
   if (player.username === bot.username) return
+  
 const message =
 '§6§l[ عراق بابلون ] §r اهلاً وسهلاً بكم في السيرفر! | §bDiscord: https://discord.gg/EpCyF3A6Up'
 
